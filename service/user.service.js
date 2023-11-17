@@ -5,8 +5,10 @@ class UserService{
         const res = await userModel.create({user_name,user_id,user_pwd,user_age,user_sex})
         return res.dataValues;
     }
-    async getUser(){
-        const res = await userModel.findAll()
+    async getUser(user){
+        const res = await userModel.findAll({
+            where:{user_id:user.userId,user_pwd:user.userPwd}
+        })
         return res;
     }
 }

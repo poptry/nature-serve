@@ -1,8 +1,10 @@
 const {createUser,getUser} = require('../service/user.service')
 
 class userController{
-    async getUser(ctx,next){
-        ctx.body =  JSON.stringify(await getUser())
+    async login(ctx,next){
+        const req_user = ctx.request.query
+        console.log(req_user);
+        ctx.body =  JSON.stringify(await getUser(req_user))
     }
     async addUser(ctx,next){
         //https://blog.csdn.net/The_Lucky_one/article/details/105151568

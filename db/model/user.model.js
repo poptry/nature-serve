@@ -25,6 +25,18 @@ const User = seq.define(
     user_age:{
         type:DataTypes.INTEGER(11),
         allowNull:false
+    },
+    user_motto:{
+        type:DataTypes.STRING(255),
+        allowNull:false
+    },
+    user_city:{
+        type:DataTypes.STRING(255),
+        allowNull:false
+    },
+    user_avatar:{
+        type:DataTypes.STRING(255),
+        allowNull:false
     }
 },{
     timestamps:false,
