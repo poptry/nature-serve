@@ -3,7 +3,6 @@ const sequelize = require('../db/dbConn.js');
 
 class UserService{
     async createUser(user_name,user_id,user_pwd,user_age,user_sex,user_motto,user_city,user_avatar){
-        console.log(user_name,user_pwd,user_age,user_sex,user_id,user_motto,user_city,user_avatar);
         const res = await userModel.create({user_name,user_pwd,user_age,user_sex,user_id,user_motto,user_city,user_avatar})
         return res.dataValues;
     }

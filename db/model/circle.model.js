@@ -9,33 +9,41 @@ const Circle = seq.define('circle', {
         autoIncrement: true
     },
     circle_avatar: {
-        type: DataTypes.STRING(255), // 使用 VARCHAR 数据类型，长度可根据实际需要调整
+        type: DataTypes.STRING(255),
         allowNull: false
     },
     circle_profile: {
-        type: DataTypes.STRING(255), // 使用 VARCHAR 数据类型，长度可根据实际需要调整
+        type: DataTypes.STRING(255),
         allowNull: false
     },
     circle_owner: {
-        type: DataTypes.BIGINT(20), // 使用 VARCHAR 数据类型，长度可根据实际需要调整
+        type: DataTypes.BIGINT(20),
         allowNull: false
     },
     circle_avatar: {
-        type: DataTypes.STRING(255), // 使用 VARCHAR 数据类型，长度可根据实际需要调整
+        type: DataTypes.STRING(255),
         allowNull: false
     },
     circle_city: {
-        type: DataTypes.STRING(255), // 使用 VARCHAR 数据类型，长度可根据实际需要调整
+        type: DataTypes.STRING(255),
         allowNull: false
     },
     circle_type: {
-        type: DataTypes.STRING(255), // 使用 VARCHAR 数据类型，长度可根据实际需要调整
+        type: DataTypes.STRING(255),
         allowNull: false
     },
     circle_people: {
-        type: DataTypes.INTEGER(20), // 使用 VARCHAR 数据类型，长度可根据实际需要调整
+        type: DataTypes.INTEGER(20),
         allowNull: false
     },
+    circle_name: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+    },
+    circle_preview: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+    }
     // 其他字段可以继续添加
 }, {
     timestamps: false,
