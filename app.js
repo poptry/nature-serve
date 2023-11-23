@@ -1,16 +1,14 @@
 const Koa = require('koa');
 const router = require('./router');
-const app = new Koa()
 const cors = require("koa2-cors") //引入跨域
 const {APP_PORT} = require('./config/config.default') //引入全局变量
 const {koaBody} = require('koa-body') //获取请求参数
 const http = require('http')
 const {Server} = require('socket.io');
-app.use(koaBody(
-  {
-  multipart:true
-}
-)).use(router.routes(),router.allowedMethods())
+const db = require('./db/dbConn.js')
+const chatSocket = require('./socket/chat')
+const chatModel = require('./db/model/chat.model.js')
+const app = new Koa()
 const server = http.createServer(app.callback())
 //构建Socket.IO服务器
 const io = new Server(server,{
@@ -19,13 +17,22 @@ const io = new Server(server,{
     credentials: true
   }
 })
+app.context.db = db
+app.context.io = io
+
+app.use(koaBody(
+  {
+  multipart:true
+}
+)).use(router.routes(),router.allowedMethods())
+
+/**
+ * The socket parameter represents a WebSocket connection.
+ * @typedef {import('socket.io').Socket} Socket
+ */
 //监听WebSocket连接
 io.on('connection',(socket) => {
-  console.log('用户连接成功');
-  socket.on('msg',msg=>{
-    console.log(msg);
-    io.emit('msg',msg)
-  })
+  chatSocket(socket,io,db,chatModel)
 })
 //https://segmentfault.com/q/1010000040670135 跨域
 app.use(cors({

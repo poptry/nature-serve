@@ -4,7 +4,6 @@ class userController{
     //登录
     async login(ctx,next){
         const req_user = ctx.request.query
-        console.log(req_user);
         ctx.body =  JSON.stringify(await getUser(req_user))
     }
     //注册
