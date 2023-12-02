@@ -3,8 +3,9 @@ const {DataTypes} = require('sequelize')
 const seq = require('../dbConn.js')
 const Score = seq.define(
     'score_pro',{
+    //如果我先在数据库中定义了主键字段，然后才是在这边定义的主键字段，那么这边的主键字段 不会 覆盖数据库中的主键字段
     score_id:{
-        type: DataTypes.BIGINT(20),
+        type: DataTypes.BIGINT(30),
         primaryKey: true,
         allowNull: false,
         unique: true,
@@ -18,16 +19,12 @@ const Score = seq.define(
         type:DataTypes.BIGINT(20),
         allowNull:false
     },
-    score_sum:{
-        type: DataTypes.DECIMAL(2,1),
-        allowNull: false
-    },
-    score_user:{
-        type: DataTypes.INTEGER(10),
+    score_number:{
+        type: DataTypes.INTEGER(20),
         allowNull: false
     }
 },{
-    timestamps:false,
+    timestamps: false,
     tableName: 'score_pro'
 });
 Score.sync({alter:true})
