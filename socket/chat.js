@@ -3,6 +3,7 @@ module.exports = (socket, io, db,chatModel) => {
     // Handle chat message event
     socket.on('chatMsg', async (data) => {
     const { send_id, receive_id, msg, timestamp } = data;
+    console.log(send_id,receive_id,msg,timestamp);
     if(send_id && receive_id && msg && timestamp){
         await chatModel.create({
             chat_send_id:send_id,
