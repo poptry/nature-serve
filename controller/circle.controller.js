@@ -1,4 +1,4 @@
-const {getCircle,getMyCircle,getCircleByName} = require('../service/circle.service')
+const {getCircle,getMyCircle,getCircleByName,getCircleMembers,getCircleOwner} = require('../service/circle.service')
 
 class userController{
     async getCircleInfo(ctx,next){
@@ -14,6 +14,16 @@ class userController{
     async getCircleByName(ctx,next){
         const {circleName} = ctx.request.query
         ctx.body = JSON.stringify(await getCircleByName(circleName))
+    }
+    //根据圈子id查询圈子所有的成员
+    async getCircleMembers(ctx,next){
+        const {circle_id} = ctx.request.query
+        ctx.body = JSON.stringify(await getCircleMembers(circle_id))
+    }
+    //根据圈子的id获取圈主的信息
+    async getCircleOwner(ctx,next){
+        const {circle_id} = ctx.request.query
+        ctx.body = JSON.stringify(await getCircleOwner(circle_id))
     }
 }
 module.exports = new userController()
