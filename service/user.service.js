@@ -13,6 +13,7 @@ class UserService{
         return res;
     }
     async updateAvatar(newValue) {
+        console.log('进入数据库');
         const { user_id, url } = newValue; // 假设 newValue 包含了用户ID和新的头像信息
         const sql = `
             UPDATE user

@@ -48,6 +48,10 @@ const Product = seq.define('product', {
         type: DataTypes.DECIMAL(2,1),
         allowNull: false    
     },
+    product_stock:{
+        type: DataTypes.INTEGER(10),
+        allowNull:false
+    }
     // 其他字段可以继续添加
 }, {
     timestamps: false,

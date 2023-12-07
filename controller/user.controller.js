@@ -20,30 +20,34 @@ class userController{
     //更改信息
     async updateUserAvatar(ctx,next){
         try {
-                const file = ctx.request.files.file;
-                const timeStamp = Date.now()
-                const userInfo = ctx.request.body
-                let name = `/avatar/${timeStamp}u${userInfo.user_id}.JPG`
-                const result = await client.put(name,`${file.filepath}`,{
-                headers:{
-                    'x-oss-storage-class': 'Standard',
-                    'x-oss-object-acl': 'private',
-                    'Content-Disposition': 'inline',
-                    'content-type': 'image/jpg'
-                }})
-                let {user_id} = {...userInfo}
-                let newValue = {user_id,url:result.url,}
-                console.log(newValue);
-                const res = await updateAvatar(newValue)
-                ctx.body = {
-                    code:200,
-                    url:result.url,
-                }
-            } catch (error) {
-                ctx.body = {
-                    code:400
-                }
+            const file = ctx.request.files.file;
+            const timeStamp = Date.now()
+            let {userInfo} = ctx.request.body
+            userInfo = JSON.parse(userInfo)
+            console.log(userInfo);
+            let name = `/avatar/${timeStamp}u${userInfo.user_id}.JPG`
+            console.log('eeeeeeeeee');
+            const result = await client.put(name,`${file.filepath}`,{
+            headers:{
+                'x-oss-storage-class': 'Standard',
+                'x-oss-object-acl': 'private',
+                'Content-Disposition': 'inline',
+                'content-type': 'image/jpg'
+            }})
+            console.log("处理完成oss");
+            let {user_id} = {...userInfo}
+            let newValue = {user_id,url:result.url,}
+            const res = await updateAvatar(newValue)
+            ctx.body = {
+                code:200,
+                url:result.url,
             }
+        } catch (error) {
+            console.log(error);
+            ctx.body = {
+                code:400
+            }
+        }
     }
 }
 module.exports = new userController()

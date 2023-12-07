@@ -7,7 +7,9 @@ const http = require('http')
 const {Server} = require('socket.io');
 const db = require('./db/dbConn.js')
 const chatSocket = require('./socket/chat')
-const chatModel = require('./db/model/chat.model.js')
+const chatModel = require('./db/model/chat.model.js');
+const circleMsgModel = require('./db/model/circleMsg.model.js')
+// const { getCircleMsg } = require('./service/circle.service.js');
 const app = new Koa()
 const server = http.createServer(app.callback())
 //构建Socket.IO服务器
@@ -32,7 +34,11 @@ app.use(koaBody(
  */
 //监听WebSocket连接
 io.on('connection',(socket) => {
-  chatSocket(socket,io,db,chatModel)
+  socket.on('join',(roomid) => {
+    socket.join(roomid)
+    console.log('join',roomid);
+  }),
+  chatSocket(socket,io,db,chatModel,circleMsgModel)
 })
 //https://segmentfault.com/q/1010000040670135 跨域
 app.use(cors({

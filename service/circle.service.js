@@ -79,5 +79,18 @@ class circleService{
             console.log(error);
         }
     }
+    //获取圈子的聊天记录
+    async getCircleMsg(circle_id){
+        const sql = `select C.*,U.user_avatar from circle_msg C left join user U on C.user_id = U.user_id  where circle_id=:circle_id`;
+        try{
+            const res = await sequelize.query(sql,{
+                type:sequelize.QueryTypes.SELECT,
+                replacements: { circle_id: circle_id }
+            })
+            return res;
+        }catch(error){
+            console.log(error);
+        }
+    }
 }
 module.exports = new circleService()

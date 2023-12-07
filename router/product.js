@@ -5,4 +5,5 @@ const product = new Router()
 product.get('/getPros',proController.getPros);
 product.get('/getMenPros',proController.getMenPros);
 product.get('/getWomenPros',proController.getWomenPros);
+product.get('/getShopCart',proController.getShopCart);
 module.exports = product;
