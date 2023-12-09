@@ -8,4 +8,5 @@ circle.get('/getCircleByName',circleController.getCircleByName);
 circle.get('/getCircleMembers',circleController.getCircleMembers);
 circle.get('/getCircleOwner',circleController.getCircleOwner);
 circle.get('/getCircleChat',circleController.getCircleChat);
+circle.post('/joinCircle',circleController.joinCircle);
 module.exports = circle;

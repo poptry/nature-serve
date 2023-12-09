@@ -37,7 +37,11 @@ const User = seq.define(
     user_avatar:{
         type:DataTypes.STRING(255),
         allowNull:false
-    }
+    },
+    user_hobby:{
+        type:DataTypes.STRING(255),
+        allowNull:true
+    },
 },{
     timestamps:false,
     tableName: 'user'

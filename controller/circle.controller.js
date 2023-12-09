@@ -1,4 +1,4 @@
-const {getCircle,getMyCircle,getCircleByName,getCircleMembers,getCircleOwner,getCircleMsg} = require('../service/circle.service')
+const {getCircle,getMyCircle,getCircleByName,getCircleMembers,getCircleOwner,getCircleMsg,joinCircle} = require('../service/circle.service')
 
 class userController{
     async getCircleInfo(ctx,next){
@@ -29,6 +29,13 @@ class userController{
     async getCircleChat(ctx,next){
         const {circle_id} = ctx.request.query
         ctx.body = JSON.stringify(await getCircleMsg(circle_id))
+    }
+    //加入圈子
+    async joinCircle(ctx,next){
+        const {user_id,circle_id} = ctx.request.body
+        const res = await joinCircle(user_id,circle_id)
+        console.log(res);
+        ctx.body = JSON.stringify(res)
     }
 }
 module.exports = new userController()
