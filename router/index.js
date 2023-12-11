@@ -6,11 +6,12 @@ const friend = require('./friend.js')
 const chat  = require('./chat.js')
 const product = require('./product.js')
 const score = require('./score.js')
+const strategy = require('./strategy.js')
 router.use('/user',user.routes(),user.allowedMethods())
 router.use('/circle',circle.routes(),circle.allowedMethods())
 router.use('/friend',friend.routes(),friend.allowedMethods())
 router.use('/chat',chat.routes(),chat.allowedMethods())
 router.use('/product',product.routes(),product.allowedMethods())
 router.use('/score',score.routes(),score.allowedMethods())
-
+router.use('/strategy',strategy.routes(),strategy.allowedMethods())
 module.exports = router

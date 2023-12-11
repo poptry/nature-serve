@@ -43,7 +43,7 @@ io.on('connection',(socket) => {
 //https://segmentfault.com/q/1010000040670135 跨域
 app.use(cors({
   origin: function(ctx) {
-    return 'http://localhost:8080';
+    return '*';
   },
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
   maxAge: 5,

@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const seq = require('../dbConn.js');
 
-const Chat = seq.define('circle', {
+const Chat = seq.define('chat', {
     chat_id: {
         type: DataTypes.BIGINT(20),
         primaryKey: true,
