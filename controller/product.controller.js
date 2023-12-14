@@ -1,4 +1,4 @@
-const {getPros,getMenPros,getWomenPros,getShopCart} = require('../service/product.service')
+const {getPros,getMenPros,getWomenPros,getShopCart,addShopCart,deleteShopCart,findShopCart,updateShopCart,getOrders} = require('../service/product.service')
 
 class proController{
     //获取商品列表
@@ -20,6 +20,32 @@ class proController{
     async getShopCart(ctx,next){
         const {user_id} = ctx.request.query
         ctx.body =  JSON.stringify(await getShopCart(user_id))
+    }
+    //更新商品数量
+    async updateShopCart(ctx,next){
+        const data =ctx.request.body
+        ctx.body  = JSON.stringify(await updateShopCart(data))
+    }
+    //添加购物车
+    async addShopCart(ctx,next){
+        const params = ctx.request.body
+        ctx.body =  JSON.stringify(await addShopCart(params))
+    }
+    //删除购物车
+    async deleteShopCart(ctx,next){
+        const params = ctx.request.body
+        ctx.body =  JSON.stringify(await deleteShopCart(params))
+    }
+    //查询该商品是否被用户加入购物车
+    async findShopCart(ctx,next){
+        const params = ctx.request.query
+        ctx.body =  JSON.stringify(await findShopCart(params))
+    }
+    //查询订单
+    async getOrders(ctx,next){
+        const params = ctx.request.query
+        console.log(params);
+        ctx.body = JSON.stringify(await getOrders(params))
     }
 }
 module.exports = new proController()

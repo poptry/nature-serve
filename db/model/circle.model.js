@@ -34,7 +34,8 @@ const Circle = seq.define('circle', {
     },
     circle_people: {
         type: DataTypes.INTEGER(20),
-        allowNull: false
+        allowNull: false,
+        defaultValue:0
     },
     circle_name: {
         type: DataTypes.STRING(255),

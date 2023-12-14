@@ -31,5 +31,9 @@ user.post('/upload',async ctx => {
     console.log(error);
   }
 })
+user.get('/getUserInfo',userController.getUserInfo)
 user.post('/updateAvatar',userController.updateUserAvatar)
+user.post('/updateUserWantInfo',userController.updateUserWantInfo)
+user.post('/updateUserHobby',userController.updateUserHobby)
+user.post('/updateOther',userController.updateOther)
 module.exports = user;

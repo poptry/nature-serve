@@ -31,7 +31,7 @@ const User = seq.define(
         allowNull:false
     },
     user_city:{
-        type:DataTypes.STRING(255),
+        type:DataTypes.STRING(20),
         allowNull:false
     },
     user_avatar:{
@@ -39,9 +39,25 @@ const User = seq.define(
         allowNull:false
     },
     user_hobby:{
+        type:DataTypes.STRING(60),
+        allowNull:true
+    },
+    user_wantto_do:{
         type:DataTypes.STRING(255),
         allowNull:true
     },
+    user_wantto_go:{
+        type:DataTypes.STRING(255),
+        allowNull:true
+    },
+    user_speciality:{
+        type:DataTypes.STRING(60),
+        allowNull:true
+    },
+    user_doing:{
+        type:DataTypes.STRING(255),
+        allowNull:true
+    }
 },{
     timestamps:false,
     tableName: 'user'

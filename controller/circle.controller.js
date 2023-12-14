@@ -1,5 +1,5 @@
-const {getCircle,getMyCircle,getCircleByName,getCircleMembers,getCircleOwner,getCircleMsg,joinCircle} = require('../service/circle.service')
-
+const {getCircle,getMyCircle,getCircleByName,getCircleMembers,getCircleOwner,getCircleMsg,joinCircle,createMyCircle,quitCircle} = require('../service/circle.service')
+const client = require('../util/oss_init.js')
 class userController{
     async getCircleInfo(ctx,next){
         ctx.body =  JSON.stringify(await getCircle())
@@ -36,6 +36,51 @@ class userController{
         const res = await joinCircle(user_id,circle_id)
         console.log(res);
         ctx.body = JSON.stringify(res)
+    }
+    //创建圈子
+    async createMyCircle(ctx,next){
+        // const data = ctx.request.body
+        try {
+            const file = ctx.request.files.file;
+            const file2 = ctx.request.files.file2;
+            const timeStamp = Date.now()
+            let {createCircleInfo} = ctx.request.body
+            createCircleInfo = JSON.parse(createCircleInfo)
+            let name = `/circle/circleCover/${timeStamp}cc${createCircleInfo.circle_owner}.JPG`
+            let name2 = `/circle/circleHead/${timeStamp}ch${createCircleInfo.circle_owner}.JPG`
+            console.log('eeeeeeeeee');
+            const result = await client.put(name,`${file.filepath}`,{
+                headers:{
+                    'x-oss-storage-class': 'Standard',
+                    'x-oss-object-acl': 'private',
+                    'Content-Disposition': 'inline',
+                    'content-type': 'image/jpg'
+                }})
+            const result2 = await client.put(name2,`${file2.filepath}`,{
+                headers:{
+                    'x-oss-storage-class': 'Standard',
+                    'x-oss-object-acl': 'private',
+                    'Content-Disposition': 'inline',
+                    'content-type': 'image/jpg'
+                }})
+            createCircleInfo.circle_preview = result.url
+            createCircleInfo.circle_avatar = result2.url
+            const res = await createMyCircle(createCircleInfo)
+            ctx.body = {
+                code:200,
+                res
+            }
+        } catch (error) {
+            console.log(error);
+            ctx.body = {
+                code:400
+            }
+        }
+    }
+    //退出圈子
+    async quitCircle(ctx,next){
+        const {user_id,circle_id} = ctx.request.body
+        ctx.body = JSON.stringify(await quitCircle(user_id,circle_id))
     }
 }
 module.exports = new userController()

@@ -119,5 +119,50 @@ class circleService{
             }
         }
     }
+    //新建我的圈子
+    async createMyCircle(data){
+        //利用cirModel的create方法
+        try{
+            const res = await circleModel.create({
+                circle_name:data.circle_name,
+                circle_owner:data.circle_owner,
+                circle_profile:data.circle_profile,
+                circle_city:data.circle_city,
+                circle_type:data.circle_type,
+                circle_avatar:data.circle_avatar,
+                circle_preview:data.circle_preview
+            })
+            return {
+                code:200,
+                msg:'创建成功',
+                res
+            }
+        }catch(error){
+            return {
+                code:400,
+                msg:'创建失败',
+                error:error
+            }
+        }
+    }
+    //用户退出圈子
+    async quitCircle(user_id,circle_id){
+        const sql = `delete from user_circle where user_id=:user_id and circle_id=:circle_id`;
+        try{
+            const res = await sequelize.query(sql,{
+                type:sequelize.QueryTypes.DELETE,
+                replacements: { user_id: user_id,circle_id:circle_id }
+            })
+            return {
+                code:200,
+                msg:'退出成功'
+            }
+        }catch(error){
+            return {
+                code:400,
+                msg:'退出失败'
+            }
+        }
+    }
 }
 module.exports = new circleService()

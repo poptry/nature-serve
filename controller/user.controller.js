@@ -1,4 +1,4 @@
-const {createUser,getUser,updateAvatar} = require('../service/user.service')
+const {createUser,getUser,updateAvatar,updateUserWantInfo,getUserInfo,updateUserHobby,updateOther} = require('../service/user.service')
 const client = require('../util/oss_init.js')
 class userController{
     //登录
@@ -14,7 +14,6 @@ class userController{
         ctx.body = {
             code:200,
             message:'添加用户成功',
-
         }
     }
     //更改信息
@@ -47,6 +46,41 @@ class userController{
             ctx.body = {
                 code:400
             }
+        }
+    }
+    //更改用户want信息
+    async updateUserWantInfo(ctx,next){
+        let newValue = ctx.request.body
+        const res = await updateUserWantInfo(newValue)
+        ctx.body = {
+            code:200,
+            message:'更新成功'
+        }
+    }
+    //获取用户信息
+    async getUserInfo(ctx,next){
+        let {user_id} = ctx.request.query
+        console.log(user_id);
+        const res = await getUserInfo(user_id)
+        ctx.body = {
+            code:200,
+            data:res
+        }
+    }
+    //更新用户爱好特长
+    async updateUserHobby(ctx,next){
+        let newValue = ctx.request.body
+        const res = await updateUserHobby(newValue)
+        ctx.body = {
+            res
+        }
+    }
+    //更改用户其它信息
+    async updateOther(ctx,next){
+        let newValue = ctx.request.body
+        const res = await updateOther(newValue)
+        ctx.body = {
+            res
         }
     }
 }
