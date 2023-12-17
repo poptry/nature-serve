@@ -102,7 +102,7 @@ class circleService{
     }
     //加入某个圈子
     async joinCircle(user_id,circle_id){
-        const sql = `insert into user_circle(user_id,circle_id) values(:user_id,:circle_id)`;
+        const sql = `insert into user_circle(user_id,circle_id) values(:user_id,:circle_id);`;
         try{
             const res = await sequelize.query(sql,{
                 type:sequelize.QueryTypes.INSERT,
@@ -110,27 +110,34 @@ class circleService{
             })
             return {
                 code:200,
-                msg:'加入成功'
+                msg:'加入成功',
+                res
             }
         }catch(error){
             return {
                 code:400,
-                msg:'您已加入过啦!'
+                msg:'您已加入过啦!',
+                
             }
         }
     }
     //新建我的圈子
     async createMyCircle(data){
+        console.log(data);
         //利用cirModel的create方法
         try{
-            const res = await circleModel.create({
-                circle_name:data.circle_name,
-                circle_owner:data.circle_owner,
-                circle_profile:data.circle_profile,
-                circle_city:data.circle_city,
-                circle_type:data.circle_type,
-                circle_avatar:data.circle_avatar,
-                circle_preview:data.circle_preview
+            const sql = `insert into circle(circle_name,circle_owner,circle_profile,circle_city,circle_type,circle_avatar,circle_preview) values(:circle_name,:circle_owner,:circle_profile,:circle_city,:circle_type,:circle_avatar,:circle_preview);`;
+            const res = await sequelize.query(sql,{
+                type:sequelize.QueryTypes.INSERT,
+                replacements: { 
+                    circle_name:data.circle_name,
+                    circle_owner:data.circle_owner,
+                    circle_profile:data.circle_profile,
+                    circle_city:data.circle_city,
+                    circle_type:data.circle_type,
+                    circle_avatar:data.circle_avatar,
+                    circle_preview:data.circle_preview
+                }
             })
             return {
                 code:200,
@@ -162,6 +169,38 @@ class circleService{
                 code:400,
                 msg:'退出失败'
             }
+        }
+    }
+    //将圈子成员踢出群聊
+    async kickOutCircle(user_id,circle_id){
+        console.log(user_id,circle_id);
+        const sql = `delete from user_circle where user_id=:user_id and circle_id=:circle_id`;
+        try{
+            const res = await sequelize.query(sql,{
+                type:sequelize.QueryTypes.DELETE,
+                replacements: { user_id: user_id,circle_id:circle_id }
+            })
+            return {
+                code:200,
+                msg:'踢出成功'
+            }
+        }catch(error){
+            return {
+                code:400,
+                msg:'踢出失败'
+            }
+        }
+    }
+    //查询最新插入的圈子
+    async getNewCircle(){
+        const sql = `select * from circle order by circle_id desc limit 1`;
+        try{
+            const res = await sequelize.query(sql,{
+                type:sequelize.QueryTypes.SELECT
+            })
+            return res;
+        }catch(error){
+            console.log(error);
         }
     }
 }

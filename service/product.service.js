@@ -26,7 +26,7 @@ class ProService{
     async getMenPros(params){
         if(!params.proName){
             const sql = `SELECT * FROM product p
-            WHERE p.product_type = 1;`;
+            WHERE p.product_type = 1 or p.product_type = 2;`;
             try{
                 const res = await sequelize.query(sql,{
                     type:sequelize.QueryTypes.SELECT,
@@ -37,7 +37,7 @@ class ProService{
             }
         }else{
             const sql = `SELECT * FROM product p
-            WHERE p.product_type = 1 and p.product_name LIKE :proName`;
+            WHERE (p.product_type = 1 or p.product_type = 2) and p.product_name LIKE :proName`;
             try{
                 const res = await sequelize.query(sql,{
                     type:sequelize.QueryTypes.SELECT,
@@ -53,7 +53,7 @@ class ProService{
     async getWomenPros(params){
         if(!params.proName){
             const sql = `SELECT * FROM product p
-            WHERE p.product_type = 0;`;
+            WHERE p.product_type = 0 or p.product_type = 2;`;
             try{
                 const res = await sequelize.query(sql,{
                     type:sequelize.QueryTypes.SELECT,
@@ -64,7 +64,7 @@ class ProService{
             }
         }else{
             const sql = `SELECT * FROM product p
-            WHERE p.product_type = 0 and p.product_name LIKE :proName`;
+            WHERE (p.product_type = 0 or p.product_type = 2) and p.product_name LIKE :proName`;
             try{
                 const res = await sequelize.query(sql,{
                     type:sequelize.QueryTypes.SELECT,

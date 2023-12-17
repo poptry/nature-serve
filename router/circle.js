@@ -11,4 +11,5 @@ circle.get('/getCircleChat',circleController.getCircleChat);
 circle.post('/joinCircle',circleController.joinCircle);
 circle.post('/createMyCircle',circleController.createMyCircle);
 circle.post('/quitCircle',circleController.quitCircle);
+circle.post('/kickOutCircle',circleController.kickOutCircle);
 module.exports = circle;

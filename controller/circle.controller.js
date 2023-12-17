@@ -1,4 +1,4 @@
-const {getCircle,getMyCircle,getCircleByName,getCircleMembers,getCircleOwner,getCircleMsg,joinCircle,createMyCircle,quitCircle} = require('../service/circle.service')
+const {getCircle,getMyCircle,getCircleByName,getCircleMembers,getCircleOwner,getCircleMsg,joinCircle,createMyCircle,quitCircle,kickOutCircle,getNewCircle} = require('../service/circle.service')
 const client = require('../util/oss_init.js')
 class userController{
     async getCircleInfo(ctx,next){
@@ -39,7 +39,6 @@ class userController{
     }
     //创建圈子
     async createMyCircle(ctx,next){
-        // const data = ctx.request.body
         try {
             const file = ctx.request.files.file;
             const file2 = ctx.request.files.file2;
@@ -48,7 +47,6 @@ class userController{
             createCircleInfo = JSON.parse(createCircleInfo)
             let name = `/circle/circleCover/${timeStamp}cc${createCircleInfo.circle_owner}.JPG`
             let name2 = `/circle/circleHead/${timeStamp}ch${createCircleInfo.circle_owner}.JPG`
-            console.log('eeeeeeeeee');
             const result = await client.put(name,`${file.filepath}`,{
                 headers:{
                     'x-oss-storage-class': 'Standard',
@@ -66,9 +64,12 @@ class userController{
             createCircleInfo.circle_preview = result.url
             createCircleInfo.circle_avatar = result2.url
             const res = await createMyCircle(createCircleInfo)
+            const res2 = await getNewCircle()
+            const res3 = await joinCircle(createCircleInfo.circle_owner,res2[0].circle_id)
             ctx.body = {
                 code:200,
-                res
+                res,
+                res3
             }
         } catch (error) {
             console.log(error);
@@ -81,6 +82,11 @@ class userController{
     async quitCircle(ctx,next){
         const {user_id,circle_id} = ctx.request.body
         ctx.body = JSON.stringify(await quitCircle(user_id,circle_id))
+    }
+    //踢出圈子
+    async kickOutCircle(ctx,next){
+        const {user_id,circle_id} = ctx.request.body
+        ctx.body = JSON.stringify(await kickOutCircle(user_id,circle_id))
     }
 }
 module.exports = new userController()
