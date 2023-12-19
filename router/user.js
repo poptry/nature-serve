@@ -9,7 +9,6 @@ user.get('/',(ctx)=>{
 });
 
 user.get('/login',userController.login)
-user.post('/addUser',userController.addUser)
 user.post('/upload',async ctx => {
   try {
     const file = ctx.request.files.file;
@@ -36,4 +35,5 @@ user.post('/updateAvatar',userController.updateUserAvatar)
 user.post('/updateUserWantInfo',userController.updateUserWantInfo)
 user.post('/updateUserHobby',userController.updateUserHobby)
 user.post('/updateOther',userController.updateOther)
+user.post('/registerNewUser',userController.registerNewUser)
 module.exports = user;

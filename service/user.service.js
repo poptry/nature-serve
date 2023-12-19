@@ -2,11 +2,6 @@ const userModel = require('../db/model/user.model.js')
 const sequelize = require('../db/dbConn.js');
 
 class UserService{
-    async createUser(user_name,user_id,user_pwd,user_age,user_sex,user_motto,user_city,user_avatar){
-        const res = await userModel.create({user_name,user_pwd,user_age,user_sex,user_id,user_motto,user_city,user_avatar})
-        return res.dataValues;
-    }
-    //获取用户信息
     async getUserInfo(user_id){
         const res = await userModel.findAll({
             where:{user_id:user_id}
@@ -115,6 +110,25 @@ class UserService{
             return {
                 code:404,
                 msg:'更新有误'
+            }
+        }
+    }
+    //创建用户
+    async createUser(data){
+        const sql = `insert into user(user_name,user_pwd,user_phone,user_avatar) values("${data.user_name}","${data.user_pwd}","${data.user_phone}","${data.user_avatar}")`
+        try{
+            const res = await sequelize.query(sql,{
+                type:sequelize.QueryTypes.INSERT
+            })
+            return {
+                code:200,
+                msg:'注册成功',
+                res
+            }
+        }catch(error){
+            return {
+                code:404,
+                msg:'注册失败,手机号已被注册'
             }
         }
     }

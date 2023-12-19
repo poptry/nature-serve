@@ -57,7 +57,11 @@ const User = seq.define(
     user_doing:{
         type:DataTypes.STRING(255),
         allowNull:true
-    }
+    },
+    user_phone:{
+        type:DataTypes.STRING(20),
+        allowNull:false
+    },
 },{
     timestamps:false,
     tableName: 'user'

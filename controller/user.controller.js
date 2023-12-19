@@ -1,20 +1,11 @@
 const {createUser,getUser,updateAvatar,updateUserWantInfo,getUserInfo,updateUserHobby,updateOther} = require('../service/user.service')
 const client = require('../util/oss_init.js')
+const redis = require('../util/redis.js')
 class userController{
     //登录
     async login(ctx,next){
         const req_user = ctx.request.query
         ctx.body =  JSON.stringify(await getUser(req_user))
-    }
-    //注册
-    async addUser(ctx,next){
-        //https://blog.csdn.net/The_Lucky_one/article/details/105151568
-        const {user_name,user_pwd,user_age,user_sex,user_id,user_motto,user_city,user_avatar} = ctx.request.body
-        const res = await createUser(user_name,user_id,user_pwd,user_age,user_sex,user_motto,user_city,user_avatar)
-        ctx.body = {
-            code:200,
-            message:'添加用户成功',
-        }
     }
     //更改信息
     async updateUserAvatar(ctx,next){
@@ -25,7 +16,6 @@ class userController{
             userInfo = JSON.parse(userInfo)
             console.log(userInfo);
             let name = `/avatar/${timeStamp}u${userInfo.user_id}.JPG`
-            console.log('eeeeeeeeee');
             const result = await client.put(name,`${file.filepath}`,{
             headers:{
                 'x-oss-storage-class': 'Standard',
@@ -33,7 +23,6 @@ class userController{
                 'Content-Disposition': 'inline',
                 'content-type': 'image/jpg'
             }})
-            console.log("处理完成oss");
             let {user_id} = {...userInfo}
             let newValue = {user_id,url:result.url,}
             const res = await updateAvatar(newValue)
@@ -82,6 +71,46 @@ class userController{
         ctx.body = {
             res
         }
+    }
+    
+    //注册用户
+    async registerNewUser(ctx, next){
+        let {registerInfo} = ctx.request.body; //获取注册信息
+        registerInfo = JSON.parse(registerInfo)
+        const file = ctx.request.files.file;
+        const timeStamp = Date.now()
+        let name = `/avatar/${timeStamp}u${registerInfo.userPhone}.JPG`
+        const result = await client.put(name,`${file.filepath}`,{
+            headers:{
+                'x-oss-storage-class': 'Standard',
+                'x-oss-object-acl': 'private',
+                'Content-Disposition': 'inline',
+                'content-type': 'image/jpg'
+        }})
+        registerInfo.user_avatar = result.url
+        try {
+            let flag = 0
+            await redis.get(registerInfo.user_phone).then((res) => {
+                console.log(res);
+                if(res == registerInfo.user_code){
+                    flag = 1
+                }else{
+                    flag = 0
+                }
+            })
+            if(flag == 0){
+                ctx.body = {
+                    code:400,
+                    msg:'验证码错误'
+                }
+                return
+            }else{
+                ctx.body = JSON.stringify(await createUser(registerInfo))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
     }
 }
 module.exports = new userController()

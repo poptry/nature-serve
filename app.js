@@ -7,9 +7,9 @@ const http = require('http')
 const {Server} = require('socket.io');
 const db = require('./db/dbConn.js')
 const chatSocket = require('./socket/chat')
+const Core = require('@alicloud/pop-core');
 const chatModel = require('./db/model/chat.model.js');
 const circleMsgModel = require('./db/model/circleMsg.model.js')
-// const { getCircleMsg } = require('./service/circle.service.js');
 const app = new Koa()
 const server = http.createServer(app.callback())
 //构建Socket.IO服务器
@@ -21,7 +21,6 @@ const io = new Server(server,{
 })
 app.context.db = db
 app.context.io = io
-
 app.use(koaBody(
   {
   multipart:true
