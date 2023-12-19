@@ -11,19 +11,19 @@ const User = seq.define(
         autoIncrement: true
     },
     user_pwd:{
-        type:DataTypes.STRING(255),
+        type:DataTypes.STRING(20),
         allowNull:false
     },
     user_name:{
-        type:DataTypes.STRING(255),
+        type:DataTypes.STRING(20),
         allowNull:false
     },
     user_sex:{
-        type:DataTypes.STRING(255),
+        type:DataTypes.STRING(10),
         allowNull:false
     },
     user_age:{
-        type:DataTypes.INTEGER(11),
+        type:DataTypes.INTEGER(10),
         allowNull:false
     },
     user_motto:{

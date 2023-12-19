@@ -25,11 +25,11 @@ const Circle = seq.define('circle', {
         allowNull: false
     },
     circle_city: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(50),
         allowNull: false
     },
     circle_type: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(10),
         allowNull: false
     },
     circle_people: {
@@ -38,7 +38,7 @@ const Circle = seq.define('circle', {
         defaultValue:0
     },
     circle_name: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(20),
         allowNull: false
     },
     circle_preview: {
