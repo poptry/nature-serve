@@ -5,6 +5,13 @@ const seq = new Sequelize(MYSQP_DB, MYSQL_USER, MYSQL_PWD, {
     host: MYSQL_HOST,
     port: MYSQL_PORT,
     dialect: 'mysql', // 数据库类型
+    pool: {
+        max: 15,
+        min: 5,
+        idle: 20000,
+        evict: 15000,
+        acquire: 30000
+    },
 });
 
 try{

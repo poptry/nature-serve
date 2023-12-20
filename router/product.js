@@ -11,4 +11,6 @@ product.post('/deleteShopCart',proController.deleteShopCart);
 product.get('/findShopCart',proController.findShopCart);
 product.post('/updateShopCart',proController.updateShopCart);
 product.get('/getOrders',proController.getOrders)
+product.get('/getProById',proController.getProById) // 通过id获取商品信息
+product.post('/pay',proController.pay) // 订单支付
 module.exports = product;

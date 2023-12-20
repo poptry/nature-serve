@@ -57,11 +57,11 @@ class friendService{
             console.log(error);
         }
     }
-    //查看该用户是否是我申请了的
+    //查看该用户是否是我申请了的，或者待同意的
     async isApply(user_id,friend_id){
         const sql = `select * 
         from friend 
-        where frienduser1_id = :user_id and frienduser2_id = :friend_id;`
+        where (frienduser1_id = :user_id or frienduser2_id = :user_id) and (frienduser2_id = :friend_id or frienduser1_id = :friend_id);`
         try{
             const res = await sequelize.query(sql,{
                 type:sequelize.QueryTypes.SELECT,

@@ -1,4 +1,4 @@
-const {createUser,getUser,updateAvatar,updateUserWantInfo,getUserInfo,updateUserHobby,updateOther} = require('../service/user.service')
+const {createUser,getUser,updateAvatar,updateUserWantInfo,getUserInfo,updateUserHobby,updateOther,getUserByPhone} = require('../service/user.service')
 const client = require('../util/oss_init.js')
 const redis = require('../util/redis.js')
 class userController{
@@ -6,6 +6,11 @@ class userController{
     async login(ctx,next){
         const req_user = ctx.request.query
         ctx.body =  JSON.stringify(await getUser(req_user))
+    }
+    //查看手机号是否被注册
+    async getUserByPhone(ctx,next){
+        const {phone} = ctx.request.query
+        ctx.body = JSON.stringify(await getUserByPhone(phone))
     }
     //更改信息
     async updateUserAvatar(ctx,next){

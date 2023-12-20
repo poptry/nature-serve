@@ -22,6 +22,20 @@ class ProService{
             }
         }
     }
+    //根据商品id获取商品信息
+    async getProById(product_id){
+        const sql = `SELECT * FROM product p
+        WHERE p.product_id = :product_id`;
+        try{
+            const res = await sequelize.query(sql,{
+                type:sequelize.QueryTypes.SELECT,
+                replacements: { product_id: product_id }
+            })
+            return res;
+        }catch(error){
+            console.log(error);
+        }
+    }
     //获取男装商品
     async getMenPros(params){
         if(!params.proName){
@@ -117,11 +131,11 @@ class ProService{
     }
     //添加商品到购物车
     async addShopCart(params){
-        const sql = `INSERT INTO shopcart (user_id,product_id) VALUES (:user_id,:product_id);`;
+        const sql = `INSERT INTO shopcart (user_id,product_id,size_name,shopCart_pronum) VALUES (:user_id,:product_id,:size_name,:shopCart_pronum);`;
         try{
             const res = await sequelize.query(sql,{
                 type:sequelize.QueryTypes.INSERT,
-                replacements: { user_id: params.user_id,product_id: params.product_id }
+                replacements: { user_id: params.user_id,product_id: params.product_id,size_name:params.size_name,shopCart_pronum:params.shopCart_pronum}
             })
             return {
                 res:res,
@@ -129,6 +143,7 @@ class ProService{
                 msg:'添加成功'
             }
         }catch(error){
+            console.log(error);
             return {
                 code:500,
                 msg:'添加失败'
@@ -164,11 +179,7 @@ class ProService{
                 type:sequelize.QueryTypes.SELECT,
                 replacements: { user_id: params.user_id,product_id: params.product_id }
             })
-            return {
-                res:res,
-                code:200,
-                msg:'查询成功'
-            }
+            return res
         }catch(error){
             return{
                 error:error,
@@ -220,5 +231,81 @@ class ProService{
             }
         }
     }
+    //付款
+    async pay(params){
+        const sql = `insert into orders (order_prosize,order_id,user_id,product_id,order_address,order_phone,order_remark,order_pronum,order_timestamp,order_account)
+        values (:order_prosize,:order_id,:user_id,:product_id,:order_address,:order_phone,:order_remark,
+            :order_pronum,:order_timestamp,:order_account);`;
+        console.log(params);
+        let {userInfo,product_list} = params
+        console.log('userInfo',userInfo);
+        //利用时间戳作为当前的订单id
+        const order_id = Math.round(new Date().getTime()/1000)
+        try {
+            product_list.forEach(async element => {
+                const res = await sequelize.query(sql,{
+                    type:sequelize.QueryTypes.INSERT,
+                    replacements: { 
+                        order_prosize: element.size_name,
+                        order_id: order_id,
+                        user_id: userInfo.user_id,
+                        product_id: element.product_id,
+                        order_address: userInfo.user_address,
+                        order_phone: userInfo.user_phone,
+                        order_remark: userInfo.user_remark,
+                        order_pronum: element.shopCart_pronum,
+                        order_timestamp: order_id,
+                        order_account: userInfo.order_account
+
+                    }
+                })
+            });
+            return {
+                code:200,
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+        // try{
+        //     const res = await sequelize.query(sql,{
+        //         type:sequelize.QueryTypes.UPDATE,
+        //         replacements: { order_id: params.order_id }
+        //     })
+        //     return {
+        //         res:res,
+        //         code:200,
+        //         msg:'付款成功'
+        //     }
+        // }catch(error){
+        //     return {
+        //         code:500,
+        //         msg:'付款失败'
+        //     }
+        // }
+    }
+
+
+
+    // //购买成功后删除购物车商品
+    // async deleteShopCartAfterPay(params){
+    //     const sql = 'DELETE FROM shopcart WHERE user_id = :user_id';
+    //     try{
+    //         const res = await sequelize.query(sql,{
+    //             type:sequelize.QueryTypes.DELETE,
+    //             replacements: { user_id: params.user_id,product_id: params.product_id }
+    //         })
+    //         return {
+    //             res:res,
+    //             code:200,
+    //             msg:'删除成功'
+    //         };
+    //     }catch(error){
+    //         return {
+    //             code:500,
+    //             msg:'删除失败'
+    //         }
+    //     }
+    // }
 }
 module.exports = new ProService()

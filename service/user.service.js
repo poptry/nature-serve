@@ -10,8 +10,21 @@ class UserService{
     }
     //登录验证
     async getUser(user){
+        try {
+            const sql = `select * from user where (user_id = "${user.userId}" or user_phone = "${user.userId}") and user_pwd = "${user.userPwd}"`
+            const res = await sequelize.query(sql, {
+                type: sequelize.QueryTypes.SELECT
+            });
+            return res;
+        } catch (error) {
+            
+        }
+
+    }
+    //查询手机号是否被注册
+    async getUserByPhone(phone){
         const res = await userModel.findAll({
-            where:{user_id:user.userId,user_pwd:user.userPwd}
+            where:{user_phone:phone}
         })
         return res;
     }
