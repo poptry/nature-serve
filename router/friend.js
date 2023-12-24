@@ -8,4 +8,5 @@ friend.get('/getApply',friendController.getApply);
 friend.get('/isApply',friendController.isApply);
 friend.post('/agreeApply',friendController.agreeApply);
 friend.post('/refuseApply',friendController.refuseApply);
+friend.post('/deleteFriend',friendController.deleteFriend)
 module.exports = friend;

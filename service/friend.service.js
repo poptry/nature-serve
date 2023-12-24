@@ -114,5 +114,23 @@ class friendService{
             }
         }
     }
+    //删除好友
+    async deleteFriend(user_id,friend_id){
+        const sql = `DELETE FROM friend WHERE (frienduser1_id = ${friend_id} or frienduser2_id= ${friend_id}) and (frienduser2_id = ${user_id} or frienduser1_id = ${user_id})`
+        try{
+            const res = await sequelize.query(sql,{
+                type:sequelize.QueryTypes.DELETE
+            })
+            return {
+                code:200,
+                msg:"删除成功"
+            }
+        }catch(error){
+            return {
+                code:400,
+                msg:"删除失败"
+            }
+        }
+    }
 }
 module.exports = new friendService()

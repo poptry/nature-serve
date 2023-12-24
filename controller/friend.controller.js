@@ -1,4 +1,4 @@
-const {getFriends,addFriend,getApply,isApply,agreeApply,refuseApply} = require('../service/friend.service')
+const {getFriends,addFriend,getApply,isApply,agreeApply,refuseApply,deleteFriend} = require('../service/friend.service')
 
 class userController{
     async getFriends(ctx,next){
@@ -30,6 +30,11 @@ class userController{
     async refuseApply(ctx,next){
         const {user_id,friend_id} = ctx.request.body
         ctx.body = JSON.stringify(await refuseApply(user_id,friend_id))
+    }
+    //删除好友
+    async deleteFriend(ctx,next){
+        const {user_id,friend_id} = ctx.request.body
+        ctx.body = JSON.stringify(await deleteFriend(user_id,friend_id))
     }
 }
 module.exports = new userController()

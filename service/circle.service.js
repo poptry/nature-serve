@@ -58,7 +58,7 @@ class circleService{
     }
     //查询圈子成员
     async getCircleMembers(circle_id){
-        const sql = `select U.user_id,U.user_name,U.user_avatar,U.user_hobby,U.user_motto,U.user_age,U.user_sex,U.user_city
+        const sql = `select U.*
         FROM circle_user C
         LEFT JOIN user U on U.user_id = C.user_id
         WHERE C.circle_id = :circle_id`;

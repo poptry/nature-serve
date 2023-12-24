@@ -5,4 +5,5 @@ const strategy = new Router()
 
 strategy.get('/getStrategyCollection',strategyCollectionController.getStrategyCollection);
 strategy.post('/getCollectionDetail',CollectionController.getCollectionDetail);
+strategy.get('/getStrategyContent',strategyCollectionController.getStrategyContent)
 module.exports = strategy;
