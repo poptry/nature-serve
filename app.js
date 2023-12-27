@@ -35,7 +35,6 @@ app.use(koaBody(
 io.on('connection',(socket) => {
   socket.on('join',(roomid) => {
     socket.join(roomid)
-    console.log('join',roomid);
   }),
   chatSocket(socket,io,db,chatModel,circleMsgModel)
 })
